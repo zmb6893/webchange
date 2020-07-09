@@ -38,14 +38,15 @@
     (let [concepts (translator-form.concepts/concepts-data db)
           edited-concepts-ids (translator-form.concepts/edited-concepts db)
           edited-concepts (select-keys concepts edited-concepts-ids)
-
           scene-id (translator-form.scene/scene-id db)
           actions (translator-form.scene/actions-data db)
           assets (translator-form.scene/assets-data db)
-          objects (translator-form.scene/objects-data db)]
+          objects (translator-form.scene/objects-data db)
+          metadata (translator-form.scene/metadata-data db)]
       {:dispatch-n (->> edited-concepts
                         (map (fn [[id {:keys [data]}]] [::editor/update-dataset-item id data]))
                         (concat (list [::editor/reset-scene-actions scene-id actions]
                                       [::editor/reset-scene-assets scene-id assets]
                                       [::editor/reset-scene-objects scene-id objects]
+                                      [::editor/reset-scene-metadata scene-id metadata]
                                       [::editor/save-current-scene scene-id])))})))

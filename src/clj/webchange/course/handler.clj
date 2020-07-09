@@ -12,12 +12,13 @@
             [spec-tools.data-spec :as ds]
             [schema.core :as s]
             [config.core :refer [env]]
+            [webchange.db.core :refer [*db*] :as db]
             [compojure.api.middleware :as mw]))
 
 (defn handle-save-scene
   [course-slug scene-name request]
   (let [owner-id (current-user request)
-        save (fn [data] (core/save-scene! course-slug scene-name data owner-id))]
+        save (fn [data] (core/save-scene-with-processing course-slug scene-name data owner-id))]
     (-> request
         :body
         :scene

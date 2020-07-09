@@ -6,6 +6,7 @@
     [webchange.interpreter.events :as ie]
     [webchange.editor.core :as editor]
     [webchange.common.anim :refer [animations]]
+    [webchange.editor-v2.translator.translator-form.state.scene :as translator-form.scene]
     [webchange.editor.common.actions.events :as actions.events]
     [webchange.interpreter.variables.events :as vars.events]))
 
@@ -260,6 +261,11 @@
     {:db (assoc-in db [:scenes scene-id :objects] objects)}))
 
 (re-frame/reg-event-fx
+  ::reset-scene-metadata
+  (fn [{:keys [db]} [_ scene-id metadata]]
+    {:db (assoc-in db [:scenes scene-id :metadata] metadata)}))
+
+(re-frame/reg-event-fx
   ::reset-asset
   (fn [{:keys [db]} [_]]
     {:db (update-in db [:editor] dissoc :selected-asset)}))
@@ -342,7 +348,11 @@
 
 (re-frame/reg-event-fx
   ::save-scene-success
-  (fn [_ _]
+  (fn [{:keys [db]} [_ {:keys [scene-id data]}]]
+    (re-frame/dispatch [::ie/set-scene scene-id data])
+    (re-frame/dispatch [::ie/store-scene scene-id data])
+    (re-frame/dispatch [::translator-form.scene/init-state])
+
     {:dispatch-n (list [:complete-request :save-scene])}))
 
 (re-frame/reg-event-fx

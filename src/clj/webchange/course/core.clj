@@ -5,6 +5,7 @@
             [webchange.assets.core :as assets]
             [webchange.common.files :as f]
             [clojure.data.json :as json]
+            [webchange.common.audio-parser :as ap]
             [webchange.scene :as scene]
             [config.core :refer [env]]
             [clojure.string :as string]
@@ -306,3 +307,51 @@
     (when (= clear "clear") (clear-before-update))
     (doseq [file (filter (fn [f] (. f isFile)) (assets/files source-path))]
       (store-editor-asset source-path target-path (config :public-dir) (. file getPath))))))
+
+
+(defn replace-anim-data [action]
+  (let [file-path (:audio action)
+        start (:start action)
+        duration (:duration  action)
+        animation (ap/get-talking-animation file-path start duration)
+        action (assoc action :data animation)]
+    action
+    )
+  )
+
+(defn process-action
+  [action]
+  (case (:type action)
+    "animation-sequence" (replace-anim-data action)
+    "parallel" (assoc action :data (map (fn [value] (process-action value)) (:data action) ))
+    "sequence-data" (assoc action :data (map (fn [value] (process-action value)) (:data action)))
+    action))
+
+
+(defn update-scene-lip-data [scene-name course-slug]
+  (let [{course-id :id} (db/get-course {:slug course-slug})
+        scene (db/get-scene {:name scene-name :course_id course-id})
+        {scene-version-data :data} (db/get-latest-scene-version {:scene_id (:id scene)})
+        actions (into {} (map (fn [[key value]] [key (process-action value)]) (:actions scene-version-data)))
+        scene-data (-> scene-version-data
+                       (assoc :actions actions)
+                       (assoc-in [:metadata :lip-not-sync] false))]
+    scene-data
+    )
+  )
+
+
+(defn save-scene-with-processing
+  [course-slug scene-name data owner-id]
+  (let [save-result (save-scene! course-slug scene-name data owner-id)
+        save-result  (if (true? (:lip-not-sync (:metadata data)))
+                       (try
+                         (let [scene-data (update-scene-lip-data scene-name course-slug)]
+                           (save-scene! course-slug scene-name scene-data owner-id))
+                         (catch Exception e save-result))
+                       save-result)
+        scene-name (:name (get save-result 1))
+        scene-id (:id (get save-result 1))
+        {scene-version-data :data} (db/get-latest-scene-version {:scene_id scene-id})]
+    [true {:scene-id scene-name
+           :data scene-version-data}]))

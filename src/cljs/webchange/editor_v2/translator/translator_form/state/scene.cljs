@@ -64,6 +64,10 @@
   [db]
   (-> db scene-data :objects))
 
+(defn metadata-data
+  [db]
+  (-> db scene-data :metadata))
+
 (re-frame/reg-sub
   ::objects-data
   (fn []
