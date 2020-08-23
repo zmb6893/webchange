@@ -1,3 +1,7 @@
 Zoe Bingham
 
 8. Adding the directory using "git add Zoe" resulted in no changes when typing in "git status", so no new commit was necessary. I did "git commit -m "added Zoe directory" anyway, which resulted in "no changes added to commit". I pushed even though nothing would result from the push "git push origin master". No new commits appeared on GitHub.
+
+9. By moving the questions.txt into the Zoe directory (using "mv <file path> <file path destination>" (really didn't want to type out the entire file path :P)), modifying the document, adding the document to GitHub (using "git add questions.txt), committing changes (using "git commit -m /"commit adding questions.txt to Zoe directory/""), then pushing the  commit (using "git push origin master"), THE RESULT WAS: new changes to the repository in GitHub, with a "Zoe" directory and a questions.txt within that directory.
+There is only one questions.txt file because I moved the file instead of copying the file.
+
