@@ -1,8 +1,8 @@
 {:assets
                 [{:url "/resources/public/images/dashboard/scene-preview/kitchen_background.jpg", :size 10, :type "image"}
-                 {:url "/resources/public/images/tablet.jpg", :size 10, :type "image"}
-                 {:url "/resources/public/images/bowl.jpg]", :size 10, :type "image"}
-                 {:url "/resources/public/images/blank-square.jpg", :size 10, :type "image"}],
+                 {:url "/resources/public/images/soup-game-elements/tablet.jpg", :size 10, :type "image"}
+                 {:url "/resources/public/images/soup-game-elements/bowl.jpg]", :size 10, :type "image"}
+                 {:url "/resources/public/images/soup-game-elements/blank-square.jpg", :size 10, :type "image"}],
  :objects
                 {:background {:type "background", :brightness -0.2, :filter "brighten", :src "resources/public/images/dashboard/scene-preview/kitchen_background.jpg"},
                  :tablet
@@ -34,7 +34,7 @@
                               :width      499,
                               :height     214,
                               :transition "blank-item-box",
-                              :actions    {:click {:on "click", :type "location", :location-id "sandbox"}},
+                              :actions    {:click {:on "click", :type "location", :location-id "blank-item-box"}},
                               :filter     "brighten",
                               :highlight  true,
                               :src        "/resources/public/images/blank-square.jpg"},
