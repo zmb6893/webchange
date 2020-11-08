@@ -1,10 +1,10 @@
 {:assets
-                [{:url "/resources/public/images/dashboard/scene-preview/kitchen_background.jpg", :size 10, :type "image"}
-                 {:url "/resources/public/images/soup-game-elements/tablet.jpg", :size 10, :type "image"}
-                 {:url "/resources/public/images/soup-game-elements/bowl.jpg]", :size 10, :type "image"}
-                 {:url "/resources/public/images/soup-game-elements/blank-square.jpg", :size 10, :type "image"}],
+                [{:url "/images/dashboard/scene-preview/kitchen_background.jpg", :size 10, :type "image"}
+                 {:url "/images/soup-game-elements/blank-square.jpg", :size 10, :type "image"}
+                 {:url "/images/soup-game-elements/bowl.jpg", :size 10, :type "image"}
+                 {:url "/images/soup-game-elements/tablet.jpg", :size 10, :type "image"}],
  :objects
-                {:background {:type "background", :brightness -0.2, :filter "brighten", :src "/resources/public/images/dashboard/scene-preview/kitchen_background.jpg"},
+                {:background {:type "background", :brightness -0.2, :filter "brighten", :src "/images/dashboard/scene-preview/kitchen_background.jpg"},
                  :tablet
                              {:type       "image",
                               :x          10,
@@ -14,7 +14,7 @@
                               :transition "tablet",
                               :filter     "brighten",
                               :highlight  true,
-                              :src        "/resources/public/images/tablet.jpg"},
+                              :src        "/images/soup-game-elements/tablet.jpg"},
                  :bowl
                              {:type       "image",
                               :x          500,
@@ -24,7 +24,7 @@
                               :transition "bowl",
                               :filter     "brighten",
                               :highlight  true,
-                              :src        "/resources/public/images/bowl.jpg"},
+                              :src        "/images/soup-game-elements/bowl.jpg"},
                  :blank-item-box
                              {:type       "image",
                               :x          30,
@@ -34,7 +34,7 @@
                               :transition "blank-item-box",
                               :filter     "brighten",
                               :highlight  true,
-                              :src        "/resources/public/images/blank-square.jpg"},
+                              :src        "/images/soup-game-elements/blank-square.jpg"},
                  
                  :vera
                              {:type   "animation",
@@ -47,5 +47,8 @@
                               :name   "vera",
                               :speed  0.3,
                               :start  true}},
- :scene-objects [["background"] ["tablet" "bowl" " blank-item-box" "vera"]],
-
+ :scene-objects [["background"] ["tablet" "bowl" "blank-item-box" "vera"]],
+ :actions       {:init {:type "sequence-data",
+                        :data []}},
+ :triggers      {:init {:on "start", :action "init"}},
+ :metadata      {:autostart true}}
